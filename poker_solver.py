@@ -2,6 +2,7 @@
 
 import sys
 import time
+import math
 
 from enum import Enum
 from copy import deepcopy
@@ -262,7 +263,7 @@ def poker_solve() -> None:
         tmp_deck = deepcopy(deck)
         # input()
         main_count, face_count, null_count = 0, 0, 0
-        len_combi = sum(1 for _ in combinations(tmp_deck, 5 - len(partial_flop)))
+        len_combi = math.comb(len(tmp_deck), 5 - len(partial_flop))
 
         print("{} {}  VS  {} {}   ({}, {})".format(
             main_hand[0], main_hand[1],
@@ -358,8 +359,8 @@ def poker_solve_multi():
     # _ = deck.get(MyCard("QH").name)
     # _ = deck.get(MyCard("6D").name)
 
-    len_combi = sum(1 for _ in combinations(deck, 5 - len(partial_flop)))
-    len_faces = sum(1 for _ in combinations(range(len(deck) - 5 + len(partial_flop)), 2))
+    len_combi = math.comb(len(deck), 5 - len(partial_flop))
+    len_faces = math.comb(len(deck) - 5 + len(partial_flop), 2)
 
     if face_card:
         print("{} {}  VS  {} {},  Flop= {}   ({}, {})".format(
@@ -438,7 +439,7 @@ def poker_solve_submission(tasks_to_accomplish, tasks_that_are_done=None):
             task_num, num_proc, main_hand, face_hand, partial_flop, deck = task
             # print(len(deck), current_process().name)
             if not task_num:
-                # len_combi = sum(1 for _ in combinations(deck, 5 - len(partial_flop)))
+                # len_combi = math.comb(len(deck), 5 - len(partial_flop))
                 # progress_bar = ProgressBar(len_combi)
                 pass
             count_iteration = 0
@@ -501,7 +502,7 @@ def poker_solve_submission(tasks_to_accomplish, tasks_that_are_done=None):
                     tmp_deck = deepcopy(deck)
                     for flop_card in flop:
                         tmp_deck.get(flop_card.name)
-                    len_face = sum(1 for _ in combinations(tmp_deck, 2))
+                    # len_face = math.comb(len(tmp_deck), 2))
                     # print(len(deck), len(tmp_deck), len(flop), len_face, current_process().name)
                     for tmp_face_hand in combinations(tmp_deck, 2):
                     # for _, tmp_face_hand in enumerate(combinations(tmp_deck, 2)):
