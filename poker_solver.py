@@ -201,13 +201,12 @@ def weigh_hand(cards: Tuple[MyCard, MyCard, MyCard, MyCard, MyCard]) -> int:
         value = 11000 + values_cards[values_count.index(4)] * 15 + HAUTEUR1.index(tuple(hauteur_cards))
     # Full
     elif values_count.count(3) == 3 and values_count.count(2) == 2:
-        value = 10790 + values_cards[values_count.index(3)] * 15 + values_cards[values_count.index(2)]
+        value = 10500 + values_cards[values_count.index(3)] * 15 + values_cards[values_count.index(2)]
     # Flush
     elif is_flush:
         # print("cards=", " ".join(map(str, cards)), "type_cards=", " ".join(map(str, map(type, cards))), values_cards, values_count)
-        # value = 9500 + value_add
         # value = 8500 + HAUTEUR5.index(tuple(hauteur_cards))
-        value = 9500 + HAUTEUR5.index(tuple(hauteur_cards))
+        value = 9100 + HAUTEUR5.index(tuple(hauteur_cards))
     # Quinte
     elif is_quinte:
         # input("{} {}".format(value, " ".join(map(str, cards))))
