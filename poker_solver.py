@@ -191,48 +191,50 @@ def weigh_hand(cards: Tuple[MyCard, MyCard, MyCard, MyCard, MyCard]) -> int:
 
     hauteur_cards = sorted([v for v, c in zip(values_cards, values_count) if c == 1], reverse=True)
     value = 0
-    # 0 Hauteur
-    if values_count.count(1) == 5:
-        value = HAUTEUR5.index(tuple(hauteur_cards))
-    # 1 Pair
-    if values_count.count(2) == 2 and values_count.count(1) == 3:
-        value = 1500 + values_cards[values_count.index(2)] * 300 + HAUTEUR3.index(tuple(hauteur_cards))
-        # print(" ".join(map(str, cards)), value, values_cards[values_count.index(2)], HAUTEUR3.index(tuple(hauteur_cards)), hauteur_cards)
-    # 2 Pairs
-    if values_count.count(2) == 4:
-        min_pair, max_pair = list(sorted(set([v for v, c in zip(values_cards, values_count) if c == 2])))
-        # value = 6000 + values_cards[values_count.index(2)] * 15 + HAUTEUR1.index(tuple(hauteur_cards))
-        value = 6000 + HAUTEUR2.index(tuple([max_pair, min_pair])) * 15 + HAUTEUR1.index(tuple(hauteur_cards))
-        # print("doublePairs", min_pair, max_pair, hauteur_cards, HAUTEUR1.index(tuple(hauteur_cards)), value)
-        # value = 6000 + max_pair * 2000 + min_pair * 100 + HAUTEUR1.index(tuple(hauteur_cards))
-    # Brelan
-    if values_count.count(3) == 3 and values_count.count(2) == 0:
-        # value = 7000 + values_cards[values_count.index(3)] * 80 + HAUTEUR2.index(tuple(hauteur_cards))
-        value = 7500 + values_cards[values_count.index(3)] * 80 + HAUTEUR2.index(tuple(hauteur_cards))
+
+    if is_flush and is_quinte:
+        value = 12000 + min(values_cards)
+        if min(values_cards) == 1 and max(values_cards) == 13: # Quinte case starting with an Ace
+            value = value - 1
+    # Carré
+    elif 4 in values_count:
+        value = 11000 + values_cards[values_count.index(4)] * 15 + HAUTEUR1.index(tuple(hauteur_cards))
+    # Full
+    elif values_count.count(3) == 3 and values_count.count(2) == 2:
+        value = 10790 + values_cards[values_count.index(3)] * 15 + values_cards[values_count.index(2)]
+    # Flush
+    elif is_flush:
+        # print("cards=", " ".join(map(str, cards)), "type_cards=", " ".join(map(str, map(type, cards))), values_cards, values_count)
+        # value = 9500 + value_add
+        # value = 8500 + HAUTEUR5.index(tuple(hauteur_cards))
+        value = 9500 + HAUTEUR5.index(tuple(hauteur_cards))
     # Quinte
-    if is_quinte:
+    elif is_quinte:
         # input("{} {}".format(value, " ".join(map(str, cards))))
         # value = 8000 + min(values_cards)
         # offset = int(values_cards[0] == 13 and values_cards[1] == 4) or min(values_cards)
         value = 9000 + min(values_cards)
         if min(values_cards) == 1 and max(values_cards) == 13: # Quinte case starting with an Ace
             value = value - 1
-    # Flush
-    if is_flush:
-        # print("cards=", " ".join(map(str, cards)), "type_cards=", " ".join(map(str, map(type, cards))), values_cards, values_count)
-        # value = 9500 + value_add
-        # value = 8500 + HAUTEUR5.index(tuple(hauteur_cards))
-        value = 9500 + HAUTEUR5.index(tuple(hauteur_cards))
-    # Full
-    if values_count.count(3) == 3 and values_count.count(2) == 2:
-        value = 10000 + values_cards[values_count.index(3)] * 15 + values_cards[values_count.index(2)]
-    # Carré
-    if 4 in values_count:
-        value = 11000 + values_cards[values_count.index(4)] * 15 + HAUTEUR1.index(tuple(hauteur_cards))
-    if is_flush and is_quinte:
-        value = 12000 + min(values_cards)
-        if min(values_cards) == 1 and max(values_cards) == 13: # Quinte case starting with an Ace
-            value = value - 1
+    # Brelan
+    elif values_count.count(3) == 3:
+        # value = 7000 + values_cards[values_count.index(3)] * 80 + HAUTEUR2.index(tuple(hauteur_cards))
+        value = 7500 + values_cards[values_count.index(3)] * 80 + HAUTEUR2.index(tuple(hauteur_cards))
+    # 2 Pairs
+    elif values_count.count(2) == 4:
+        min_pair, max_pair = list(sorted(set([v for v, c in zip(values_cards, values_count) if c == 2])))
+        # value = 6000 + values_cards[values_count.index(2)] * 15 + HAUTEUR1.index(tuple(hauteur_cards))
+        value = 6000 + HAUTEUR2.index(tuple([max_pair, min_pair])) * 15 + HAUTEUR1.index(tuple(hauteur_cards))
+        # print("doublePairs", min_pair, max_pair, hauteur_cards, HAUTEUR1.index(tuple(hauteur_cards)), value)
+        # value = 6000 + max_pair * 2000 + min_pair * 100 + HAUTEUR1.index(tuple(hauteur_cards))
+    # 1 Pair
+    elif values_count.count(2) == 2:
+        value = 1500 + values_cards[values_count.index(2)] * 300 + HAUTEUR3.index(tuple(hauteur_cards))
+        # print(" ".join(map(str, cards)), value, values_cards[values_count.index(2)], HAUTEUR3.index(tuple(hauteur_cards)), hauteur_cards)
+    # 0 Hauteur
+    elif values_count.count(1) == 5:
+        value = HAUTEUR5.index(tuple(hauteur_cards))
+
     # print(" ".join(map(str, cards)), values_cards, values_count, "value=", value)
     return value
 
